@@ -6,6 +6,8 @@ var bodyParser = require("body-parser");
 
 const Ticket = require("./models/ticket");
 
+const tickets = require("./routes/tickets");
+
 const db = require("./config/database");
 
 db.connect();
@@ -17,19 +19,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public")));
 
-app.post("/tickets", (req, res) => {
-  Ticket.create({
-    id_user: req.body.id_user,
-    pedido: req.body.pedido,
-  })
-    .then((doc) => {
-      res.json(doc);
-    })
-    .catch((err) => {
-      console.log(err);
-      res.json(err);
-    });
-});
+app.use("/tickets", tickets);
+
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));
