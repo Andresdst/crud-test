@@ -3,14 +3,17 @@ var express = require("express");
 var path = require("path");
 var logger = require("morgan");
 var bodyParser = require("body-parser");
+const jwtMiddleware = require("express-jwt");
 
 const Ticket = require("./models/ticket");
 const Users = require("./models/user");
 
 const tickets = require("./routes/tickets");
 const users = require("./routes/users");
+const sessions = require("./routes/sessions");
 
 const db = require("./config/database");
+const secrets = require("./config/secrets");
 
 db.connect();
 
@@ -21,8 +24,16 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public")));
 
+app.use(
+  jwtMiddleware({ secret: secrets.jwtSecret }).unless({
+    path: ["/sessions" /*, "/users"*/],
+    //method: ["GET", "OPTIONS"],
+  })
+);
+
 app.use("/tickets", tickets);
 app.use("/users", users);
+app.use("/sessions", sessions);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

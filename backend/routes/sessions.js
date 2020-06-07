@@ -1,12 +1,10 @@
 var express = require("express");
 var router = express.Router();
 
-const users = require("../controllers/usersCtrl");
 const sessions = require("../controllers/sessionsCtrl");
 
 router
   .route("/")
-  .post(users.create, sessions.generateToken, sessions.sendToken)
-  .get(users.myTickets);
+  .post(sessions.authenticate, sessions.generateToken, sessions.sendToken);
 
 module.exports = router;

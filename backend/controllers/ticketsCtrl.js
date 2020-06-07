@@ -1,9 +1,12 @@
 const Ticket = require("../models/ticket");
+const helpers = require("./helpers");
+
+const validParams = ["user_name", "pedido"];
 
 function index(req, res) {
   Ticket.find({})
     .then((docs) => {
-      res.json(docs);
+      req.res.json(docs);
     })
     .catch((err) => {
       console.log(err);
@@ -12,10 +15,11 @@ function index(req, res) {
 }
 
 function create(req, res) {
-  Ticket.create({
-    id_user: req.body.id_user,
-    pedido: req.body.pedido,
-  })
+  const params = helpers.buildParams(validParams, req.body);
+  console.log(req.user);
+  params["_user"] = req.user.id;
+
+  Ticket.create(params)
     .then((doc) => {
       res.json(doc);
     })
@@ -24,4 +28,45 @@ function create(req, res) {
       res.json(err);
     });
 }
-module.exports = { index, create };
+
+function find(req, res, next) {
+  Ticket.findById(req.params.id)
+    .then((ticket) => {
+      req.ticket = ticket;
+      req.mainObj = ticket;
+      next();
+    })
+    .catch((err) => {
+      next(err);
+    });
+}
+function update(req, res) {
+  //Actualizar un recurso
+
+  const params = helpers.buildParams(validParams, req.body);
+  req.ticket = Object.assign(req.ticket, params);
+  console.log(req.ticket);
+
+  req.ticket
+    .save()
+    .then((doc) => {
+      res.json(doc);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.json(err);
+    });
+}
+function destroy(req, res) {
+  //Eliminar recursos
+  req.ticket
+    .remove()
+    .then((doc) => {
+      res.json({});
+    })
+    .catch((err) => {
+      console.log(err);
+      res.json(err);
+    });
+}
+module.exports = { index, create, find, update, destroy };

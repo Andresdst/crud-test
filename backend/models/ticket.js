@@ -3,16 +3,12 @@ const mongoose = require("mongoose");
 const slugify = require("../plugins/slugify");*/
 
 let ticketSchema = new mongoose.Schema({
-  id_user: {
-    type: Number,
+  _user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
     required: true,
   },
-  // id_user: {
-  //   type: mongoose.Schema.Types.ObjectId,
-  //   ref: "User",
-  //   required: true,
-  // },
-
+  user_name: String,
   pedido: {
     type: Boolean,
     default: false,
