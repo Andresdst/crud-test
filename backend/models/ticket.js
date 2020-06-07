@@ -1,9 +1,6 @@
 const mongoose = require("mongoose");
 /*const mongoosePaginate = require("mongoose-paginate");
-const uploader = require("./uploader");
-const slugify = require("../plugins/slugify");
-
-const Visit = require("./Visit");*/
+const slugify = require("../plugins/slugify");*/
 
 let ticketSchema = new mongoose.Schema({
   id_user: {
