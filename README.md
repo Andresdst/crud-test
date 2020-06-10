@@ -68,7 +68,7 @@ el nombre del atributo `user_name` debe coincidir con algun nombre de usuario
 }
 ```
 
-###Tickets
+### Tickets
 al crear los ticket se podran consultar todos los ticket o los ticket asignados a cada usuario.
 
 el token enviado a la peticion de `consultar tickets por usuario` resultara el criterio de busqueda de los tickets asignado a ese usuario
