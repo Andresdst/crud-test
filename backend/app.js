@@ -11,7 +11,7 @@ const Users = require("./models/user");
 const tickets = require("./routes/tickets");
 const users = require("./routes/users");
 const sessions = require("./routes/sessions");
-
+const allowCORS = require("./config/cors")();
 const db = require("./config/database");
 const secrets = require("./config/secrets");
 
@@ -24,10 +24,12 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public")));
 
+app.use(allowCORS.unless({ path: "/public" }));
+
 app.use(
   jwtMiddleware({ secret: secrets.jwtSecret }).unless({
     path: ["/sessions" /*, "/users"*/],
-    //method: ["GET", "OPTIONS"],
+    method: ["OPTIONS"],
   })
 );
 
