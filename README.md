@@ -1,6 +1,6 @@
 # Backend de tickets y usuarios
 ---------------
-##programas necesarios
+## programas necesarios
 - Node.js v12.18.0
 - Npm
 - MongoDB
